@@ -5,12 +5,11 @@ from pyshearfix import (ShearFix, Calculation,
                         Loading, DesignCode, Region,
                         ReoInputMode, ReoDirection)
 
-shear_fix_file = ShearFix('test_project', 'engibeer', '8888')
+shear_fix_file = ShearFix('test_project', 'engibeer', '8888', Region.AUS)
 
 calculation_1 = Calculation(name='first_calculation',
                             floor='test_floor',
                             design_code=DesignCode.ACI318,
-                            region=Region.AUS,
                             column_profile=ColumnProfile(600, 300),
                             slab=Slab(250, 40, 30, 30),
                             loading=Loading(100, 20, 30),

@@ -7,7 +7,7 @@ from .slab import Slab
 from .reinforcement import Reinforcement, ReoLayer
 from .opening import Opening
 from .loading import Loading
-from .enumerations import DesignCode, Region, ReoInputMode, ReoDirection
+from .enumerations import DesignCode, ReoInputMode, ReoDirection
 from typing import Union
 
 
@@ -15,8 +15,7 @@ class Calculation:
     """
     Class for collating all inputs to a ShearFix calculation
     """
-    def __init__(self, name: str, floor: str,
-                 design_code: DesignCode, region: Region,
+    def __init__(self, name: str, floor: str, design_code: DesignCode,
                  column_profile: ColumnProfile,
                  slab: Slab,
                  loading: Loading,
@@ -26,9 +25,8 @@ class Calculation:
                                                               [ReoLayer(ReoDirection.HORIZONTAL),
                                                                ReoLayer(ReoDirection.VERTICAL)])):
         self.name = name
-        self.design_code = design_code
-        self.region = region
         self.floor = floor
+        self.design_code = design_code
         self.column_reference = 1
         self.num_columns = 1
         self.column_profile = column_profile

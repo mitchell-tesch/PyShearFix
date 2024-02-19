@@ -8,9 +8,9 @@ class Slab:
     """
     Class for specifying all slab inputs for a ShearFix calculation
     """
-    def __init__(self, thickness: int, concrete_grade: int, top_cover: int, bottom_cover: int,
+    def __init__(self, thickness: float, concrete_grade: int, top_cover: float, bottom_cover: float,
                  use_avg_pre_compression: bool = True,
-                 avg_pre_compression: int = 0,
+                 avg_pre_compression: float = 0.,
                  x_pre_compression: float = 0., y_pre_compression: float = 0.,
                  vertical_pre_stress: float = 0.,
                  step_direction: SlabStepDirection = SlabStepDirection.VERTICAL,
@@ -65,4 +65,4 @@ class Slab:
                 'PreCompressionV': self.vertical_pre_stress}
 
     def pre_comp_parameter_dict(self):
-        return {'IsSp': str(self.use_avg_pre_compression).lower()}
+        return {'IsSplitted': str(not self.use_avg_pre_compression).lower()}

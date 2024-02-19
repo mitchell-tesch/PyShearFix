@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 from pyshearfix.calculation import Calculation
 from pyshearfix.enumerations import ReoInputMode
 from pyshearfix.ec2_annex import Ec2Annex
+from .enumerations import DesignCode, Region
 
 # ShearFix Constants
 SHEARFIX_VERSION = "6.2.2.0"
@@ -14,10 +15,12 @@ XML_ENCODING = 'ISO-8859-1'
 
 class ShearFix:
     """Class for generating a ShearFix project"""
-    def __init__(self, project_name: str, designer: str, project_number: str, ec2_annex: Ec2Annex = Ec2Annex()):
+    def __init__(self, project_name: str, designer: str, project_number: str,
+                 region: Region, ec2_annex: Ec2Annex = Ec2Annex()):
         self.project_name = project_name
         self.designer = designer
         self.project_number = project_number
+        self.region = region
         self.calculations: list[Calculation] = []
         self.ec2_annex = ec2_annex
 
@@ -46,14 +49,12 @@ class ShearFix:
             sf_calc = ET.SubElement(calculations, 'ShearFix_CALCULATION')
             ET.SubElement(sf_calc, 'Text', value=calc.name)
             ET.SubElement(sf_calc, 'DesignCode', value=str(calc.design_code))
-            ET.SubElement(sf_calc, 'Region', value=str(calc.region))
+            ET.SubElement(sf_calc, 'Region', value=str(self.region))
 
             # column
             column = ET.SubElement(sf_calc, 'Column')
             self._dict_to_elements(calc.parameter_dict(), column)
-            # column > shape
-            shape = ET.SubElement(column, 'Shape')
-            shape.text = calc.column_profile.shape
+            # column > geometry
             geometry = ET.SubElement(column, calc.column_profile.shape)
             self._dict_to_value_elements(calc.column_profile.geometry, geometry)
             # colum > edge
@@ -68,12 +69,12 @@ class ShearFix:
             self._dict_to_elements(calc.slab.parameter_dict(), slab)
             # slab > thickness
             slab_thickness = ET.SubElement(slab, 'Thickness')
-            self._dict_to_value_elements(calc.slab.thick_parameter_dict(), slab_thickness)
+            self._dict_to_elements(calc.slab.thick_parameter_dict(), slab_thickness)
             self._dict_to_value_elements(calc.slab.thick_value_dict(), slab_thickness)
             self._dict_to_value_elements(calc.slab.cover_value_dict(), slab)
             # slab > pre-compression
             pre_compression = ET.SubElement(slab, 'PreCompression')
-            self._dict_to_value_elements(calc.slab.pre_comp_parameter_dict(), pre_compression)
+            self._dict_to_elements(calc.slab.pre_comp_parameter_dict(), pre_compression)
             self._dict_to_value_elements(calc.slab.pre_comp_value_dict(), pre_compression)
 
             # openings

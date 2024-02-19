@@ -16,8 +16,8 @@ class Loading:
         self.ecc_factor_mode = ecc_factor_mode
         self.ecc_factor = ecc_factor
         self.apply_min_moment = apply_min_moment
-        self.moment_x = moment_x * 1_000
-        self.moment_y = moment_y * 1_000
+        self.moment_x = moment_x * 1_000_000
+        self.moment_y = moment_y * 1_000_000
         self.shear = shear * 1_000
 
     def parameter_dict(self):
